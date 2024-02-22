@@ -19,7 +19,7 @@
 
 # create a mask using bdsm of an image
 
-def make_mask(image_name, mask_name=None, threshisl=5, atrous_do=False, rmsbox=(100,10), mask_combine=None):
+def make_mask(image_name, mask_name=None, threshisl=3, atrous_do=False, rmsbox=(100,10), mask_combine=None):
 
     import sys, os
     import numpy as np
@@ -49,7 +49,11 @@ def make_mask(image_name, mask_name=None, threshisl=5, atrous_do=False, rmsbox=(
             data_comb = fits[0].data
         with pyfits.open(mask_name) as fits:
             data = fits[0].data
-            assert data.shape() == data_comb.shape()
+            if data.shape != data_comb.shape:
+                print(f"Shapes of mask {mask_name} and mask {mask_combine} are different:")
+                print(f"Shape of mask: {data.shape}")
+                print(f"Shape of mask: {data_comb.shape}")
+            assert data.shape == data_comb.shape
             data[(data_comb == 1.)] = 1.
             fits[0].data = data
             fits.writeto(mask_name, overwrite=True)
