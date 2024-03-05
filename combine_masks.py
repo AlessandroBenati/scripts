@@ -18,6 +18,7 @@ def combine_masks(output_mask, *input_masks):
             data = fits[0].data
             if data_comb is None:
                 data_comb = np.zeros_like(data)
+            #data = data.squeeze()
             if data.shape != data_comb.shape:
                 print(f"Shapes of input mask {input_mask} and output mask {output_mask} are different:")
                 print(f"Shape of input mask: {data.shape}")
